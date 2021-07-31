@@ -1,0 +1,460 @@
+/*
+{
+	///////////////////////////////////////////////////////////////////系统每一次运行，先将start类实例化时，此时根据hotel.txt和order.txt
+	///////////////////////////////////////////////////////////////////初始化start类的对象，再调用该对象的成员函数及成员的成员函数进行相应功能
+	
+	//cout <<endl << "从\"hotel.txt\"导入酒店信息：" << endl;
+	//cout << "从\"order.txt\"导入订单信息："<<endl;
+	  
+
+
+
+
+	////////////////////////////////////////////////////////////////////打开两个文件，将会出现四种错误及一种正确共五种情况
+	////////////////////////////////////////////////////////////////////setfile_error=1:表示打开  \"hotel.txt\"  失败! 或者打开“user.txt”失败！或者打开“manager.txt”失败！
+	////////////////////////////////////////////////////////////////////登陆不了本系统，但可以注册，此时注册会新建这两个文件
+	////////////////////////////////////////////////////////////////////整个系统不能运行，退出（请在工程目录下创建hotel.txt文件，系统故障不好意思）
+	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////set_file_error(2);
+	////////////////////////////////////////////////////////////////////"文件\"hotel.txt\"  为空文件 !
+	////////////////////////////////////////////////////////////////////用户：不能运行（没有任何酒店信息，对比起未能给您服务，请联系管理员，管理员可添加酒店信息）
+	////////////////////////////////////////////////////////////////////管理员：能运行（没有任何酒店信息，要不要添加或导入信息？）
+	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////set_file_error(3);
+	////////////////////////////////////////////////////////////////////打开  \"order.txt\"  失败!
+	////////////////////////////////////////////////////////////////////目前无任何订单，相当于第一次运行
+	////////////////////////////////////////////////////////////////////用户：没事，推出系统时自动建立一个order.txt,并把该用户的订单写上去
+	////////////////////////////////////////////////////////////////////管理员：可以手动建立order.txt,可以退出查看是否被移走，在外部建立
+	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////set_file_error(4);
+	////////////////////////////////////////////////////////////////////文件\"order.txt\"  为空文件
+	////////////////////////////////////////////////////////////////////目前无任何订单
+	////////////////////////////////////////////////////////////////////用户：没事
+	////////////////////////////////////////////////////////////////////管理员：可以导入，可以手动添加订单，可以在外面添加，如果确实没有，就什么都不干
+	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////set_file_error(5);
+	////////////////////////////////////////////////////////////////////ok,两个文件都有内容！
+	////////////////////////////////////////////////////////////////////用户、管理员均正常运行，即直接跳入菜单
+	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
+
+
+	//FILE *ho = fopen("hotel.txt", "r");
+	//set_file_error(1);
+	//if (ho == NULL)
+	//{
+	//	//cout << "打开  \"hotel.txt\"  失败!" << endl;
+	//	//cout << "导入失败!!!" << endl;
+	//	//exit(-1);
+	//	goto loop5;
+	//}
+	////cout <<endl<< "正在读取\"hotel.txt\"的信息……" << endl<<endl;
+	//char c1 = fgetc(ho);
+	//set_file_error(2);
+	//if (c1 == EOF)
+	//{
+	//	//cout << "文件\"hotel.txt\"  为空文件 !" << endl;
+	//	//cout << "导入失败!!!" << endl;
+	//	//exit(-1);
+	//	//goto loop2;
+	//	goto loop0;
+	//}
+	//set_file_error(2);
+	//fseek(ho, 0, SEEK_SET);
+	//while (!feof(ho))
+	//{
+	//	char ch[10000];
+	//	//int line = 1;
+	//	int i = 0;
+	//	fgets(ch, 9998, ho);
+	//	{
+	//		hotel tel;
+	//		//hotel_node *p = new hotel_node;
+	//		int m = strlen(ch);
+	//		for (; ch[i] != ','; i++)
+	//		{
+	//			tel.sethotel_number(ch[i]);
+	//		}
+	//		i++;
+	//		for (; ch[i] != ','; i++)
+	//		{
+	//			tel.sethotel_level(ch[i] - '0');
+	//		}
+	//		i++;
+	//		for (int j = 0; ch[i] != ','; i++)
+	//		{
+	//			tel.sethotel_name(ch[i]);
+	//		}
+	//		i++;
+	//		for (int j = 0; ch[i] != ','; i++)
+	//		{
+	//			tel.sethotel_city(ch[i]);
+	//		}
+	//		i++;
+	//		for (int j = 0; ch[i] != '|'; i++)
+	//		{
+	//			tel.sethotel_location(ch[i]);
+	//		}
+	//		i++;
+	//		while (i < m - 1)
+	//		{
+	//			Room oom;
+	//			for (; ch[i] != ','; i++)
+	//			{
+	//				oom.set_room_num(ch[i]);
+	//			}
+	//			i++;
+	//			for (; ch[i] != ','; i++)
+	//			{
+	//				oom.set_room_price(ch[i]);
+	//			}
+	//			i++;
+	//			string tt;
+	//			for (; ch[i] != '|'; i++)
+	//			{
+	//				tt.push_back(ch[i]);
+	//			}
+	//			oom.set_style(tt);
+	//			i++;
+	//			tel.setallrooms(oom);
+	//		}
+	//		//line++;
+	//		allhotels.push_back(tel);
+	//	}
+
+	//}
+
+
+loop0:
+
+	///////////////////////////////////////////////////////////////////////打开manager.txt
+	FILE *ma = fopen("manager.txt", "r");
+	set_file_error(6);
+	if (ma == NULL)
+	{
+		//cout << "打开  \"user.txt\"  失败!" << endl;
+		//cout << "导入失败!!!" << endl;
+		//exit(-1);
+		FILE *mng = fopen("manager.txt", "w");
+		fclose(mng);
+	}
+	
+	//cout << endl << "正在读取\"manager.txt\"的信息……" << endl << endl;
+	char c2 = fgetc(ma);
+	set_file_error(7);
+	if (c2 == EOF)
+	{
+		//cout << "文件\"manager.txt\"  为空文件 !" << endl;
+		//cout << "导入失败!!!" << endl;
+		//exit(-1);
+		//goto loop2;
+		goto loop00;
+	}
+	set_file_error(6);
+	fseek(ma, 0, SEEK_SET);
+	while (!feof(ma))
+	{
+		char ch[10000];
+		//int line = 1;
+		int i = 0;
+		fgets(ch, 9998, ma);
+		{
+			manager ger;
+			int m = strlen(ch);
+			for (; ch[i] != ','; i++)
+			{
+				ger.setmanager_id(ch[i]);
+			}
+			i++;
+			for (; ch[i] != ','; i++)
+			{
+				ger.setmanager_name(ch[i]);
+			}
+			i++;
+			for (; ch[i] != ','; i++)
+			{
+				ger.setmanager_sex(ch[i]);
+			}
+			i++; for (; ch[i] != '|'; i++)
+			{
+				ger.setmanager_phonenumber(ch[i]);
+			}
+			i++;
+			for (; ch[i] != '|'; i++)
+			{
+				ger.setsecret(ch[i]);
+			}
+			//line++;
+			allmanagers.push_back(ger);
+		}
+		
+	}
+	fclose(ma);
+
+loop00:
+
+	///////////////////////////////////////////////////////////////////////打开user.txt
+	FILE *us = fopen("user.txt", "r");
+	set_file_error(1);
+	if (us == NULL)
+	{
+		//cout << "打开  \"user.txt\"  失败!" << endl;
+		//cout << "导入失败!!!" << endl;
+		//exit(-1);
+		goto loop3;
+	}
+	//cout << endl << "正在读取\"user.txt\"的信息……" << endl << endl;
+	char c3 = fgetc(us);
+	set_file_error(8);
+	if (c3== EOF)
+	{
+		//cout << "文件\"user.txt\"  为空文件 !" << endl;
+		//cout << "导入失败!!!" << endl;
+		//exit(-1);
+		goto loop2;
+	}
+
+	set_file_error(6);
+	fseek(us, 0, SEEK_SET);
+	while (!feof(us))
+	{
+		char ch[10000];
+		//int line = 1;
+		int i = 0;
+		fgets(ch, 9998, us);
+		{
+			user ser;
+			int m = strlen(ch);
+			for (; ch[i] != ','; i++)
+			{
+				ser.setuser_id(ch[i]);
+			}
+			i++;
+			for (; ch[i] != ','; i++)
+			{
+				ser.setuer_name(ch[i]);
+			}
+			i++;
+			for (; ch[i] != ','; i++)
+			{
+				ser.setuser_sex(ch[i]);
+			}
+			i++; for (; ch[i] != '|'; i++)
+			{
+				ser.setuser_phonenumber(ch[i]);
+			}
+			i++;
+			for (; ch[i] != '|'; i++)
+			{
+				ser.setsecret(ch[i]);
+			}
+			//line++;
+			allusers.push_back(ser);
+		}
+		
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////打开order.txt
+	FILE *or=fopen("order.txt","r");
+	set_file_error(3);
+	if (or==NULL)
+	{
+		//cout << "打开  \"order.txt\"  失败!" << endl;
+		//cout << "如果不是第一次使用，请检查该文件是否被删除！";
+		//exit(-1);
+		goto loop2;
+	}
+	char c4= fgetc(or);
+	set_file_error(4);
+	if (c4==EOF)
+	{
+		//cout << "文件\"order.txt\"  为空文件 !" << endl;
+		//cout << "当前无任何订单!!!" << endl;
+		//exit(0);
+		goto loop1;
+	}
+	
+	set_file_error(5);
+	//cout << endl << endl << "order.txt文件都有内容！" << endl;
+	fseek(or, 0, SEEK_SET);
+	while (!feof(or))
+	{
+		char ch[10000];
+		//int line = 1;
+		int i = 0;
+		fgets(ch, 9998, or);
+		{
+			order der;
+			int m = strlen(ch);
+			for (; ch[i] != '|'; i++)
+			{
+				der.setor_user(ch[i]);
+			}
+			i++;
+			for (; ch[i] != '|'; i++)
+			{
+				der.setorder_num(ch[i]);
+			}
+			i++;
+			hotel hhh;
+			for (; ch[i] != ','; i++)
+			{
+				hhh.sethotel_number(ch[i]);
+			}
+			i++;
+			for (; ch[i] != ','; i++)
+			{
+				hhh.sethotel_level(ch[i] - '0');
+			}
+			i++;
+			for (; ch[i] != ','; i++)
+			{
+				hhh.sethotel_name(ch[i]);
+			}
+			i++;
+			for (; ch[i] != ','; i++)
+			{
+				hhh.sethotel_city(ch[i]);
+			}
+			i++;
+			for (; ch[i] != '|'; i++)
+			{
+				hhh.sethotel_location(ch[i]);
+			}
+			i++;
+			der.setordered_hotel(hhh);
+			date ddd;
+			ddd.year = ch[i] - '0';
+			for (; ch[i] != '/'; i++)
+			{
+				ddd.year = ddd.year * 10 + (ch[i] - '0');
+			}
+			i++;
+			ddd.month = ch[i] - '0';
+			for (; ch[i] != '/'; i++)
+			{
+				ddd.month = ddd.month * 10 + (ch[i] - '0');
+			}
+			i++;
+			ddd.day = ch[i] - '0';
+			for (; ch[i] != '-'; i++)
+			{
+				ddd.day = ddd.day * 10 + (ch[i] - '0');
+			}
+			i++;
+			der.setindate(ddd);
+			date dddd;
+			dddd.year = ch[i] - '0';
+			for (; ch[i] != '/'; i++)
+			{
+				dddd.year = dddd.year * 10 + (ch[i] - '0');
+			}
+			i++;
+			dddd.month = ch[i] - '0';
+			for (; ch[i] != '/'; i++)
+			{
+				dddd.month = dddd.month * 10 + (ch[i] - '0');
+			}
+			i++;
+			dddd.day = ch[i] - '0';
+			for (; ch[i] != '|'; i++)
+			{
+				dddd.day = dddd.day * 10 + (ch[i] - '0');
+			}
+			i++;
+			der.setoutdate(dddd);
+			Room mmm;
+			string tt2;
+			for (; ch[i] != '-'; i++)
+			{
+				tt2.push_back(ch[i]);
+			}
+			mmm.set_style(tt2);
+			i++;
+			for (; ch[i] != '|'; i++)
+			{
+				mmm.set_room_num(ch[i]);
+			}
+			i++;
+			//mmm.set_room_price(0) 
+			//这里，因为订单没有房间一晚上的价钱，
+			//所以暂时使用mmm的初始化函数将其初始化
+
+			der.setordered_room(mmm);
+			for (; ch[i] != '|'; i++)
+			{
+				der.setmoney(ch[i]);
+			}
+			//	i++;      //这里是否需要，待观察
+			//line++;
+
+			int number_of_user = allusers.size();
+			for (int j = 0; j < number_of_user; j++)
+			{
+				if (allusers[j].getuser_id() == der.getor_user())
+				{
+					allusers[j].setmy_orders(der);
+				}
+			}
+		}
+		
+	}
+		
+
+
+
+loop1:
+	fclose(or);
+loop2:
+	fclose(us);
+	
+
+loop3:
+	fclose(ho);
+//loop4:
+//	fclose(ma);
+loop5:
+	int i = 0;
+}
+*/
+//void part1()
+//{
+//	char inFileName[20];
+//	//char outFileName[20];
+//	cout << endl;
+//	cout << endl;
+//	cout << endl;
+//	cout << "\t\t●---------------------------------------------●" << endl;
+//	cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//	cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//	cout << "\t\t|\t\t    初始化酒店信息：\t\t|" << endl;
+//	cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//	cout << "\t\t|\t\t    请输入文件名：\t\t|" << endl;
+//	cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//	cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//	cout << "\t\t\t\t ";
+//	scanf("%19s", inFileName);
+//	cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//	cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//	int i = reate_hotel_and_room(inFileName);
+//	cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//	cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//
+//	if (i == 1){
+//		cout << "\t\t|\t          导入成功！\t\t\t|" << endl;
+//		cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//		cout << "\t\t●---------------------------------------------●" << endl;
+//	}
+//	else{
+//		cout << "\t\t\t ";
+//		cout << "failed to open \"" << inFileName << "\"!" << endl;
+//		cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//		cout << "\t\t|\t\t\t\t\t\t|" << endl;
+//		cout << "\t\t●---------------------------------------------●" << endl;
+//	}
+//
+//	//output();
+//	//how_many_rooms_in_hotel(A);
+//
+//}
